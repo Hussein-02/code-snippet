@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Snippet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class SnippetController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -40,9 +42,10 @@ class SnippetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Snippet $snippet)
     {
-        //
+        $this->authorize('view',$snippet);
+        return $snippet;
     }
 
     /**
