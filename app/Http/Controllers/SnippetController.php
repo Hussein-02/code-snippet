@@ -76,4 +76,11 @@ class SnippetController extends Controller
         $snippet->delete();
         return response()->json(['message'=>'snippet deleted']);
     }
+
+    public function toggleFavorite(Snippet $snippet){
+        $this->authorize('update',$snippet);
+        $snippet->is_favorite = !$snippet->is_favorite;
+        $snippet->save();
+        return response()->json(['message'=>'favorite status updated', 'is_favorite'=>$snippet->is_favorite]);
+    }
 }
