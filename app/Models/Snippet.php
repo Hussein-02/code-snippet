@@ -9,4 +9,17 @@ class Snippet extends Model
 {
     /** @use HasFactory<\Database\Factories\SnippetFactory> */
     use HasFactory;
+
+    protected $fillable=[
+        'title',
+        'code',
+        'language',
+        'description',
+        'is_favorite',
+        'user_id',
+    ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

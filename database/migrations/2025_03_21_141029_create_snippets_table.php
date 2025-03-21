@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('snippets', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('code');
+            $table->string('language');
+            $table->text('description')->nullable();
+            $table->boolean('is_favorite')->default(false);
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
