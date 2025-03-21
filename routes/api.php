@@ -13,5 +13,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     // Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::apiResource('snippets',SnippetController::class);
+    Route::patch('snippets/{snippet}/favorite',[SnippetController::class,'toggleFavorite']);
 });
 
