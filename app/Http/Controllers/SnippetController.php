@@ -51,9 +51,20 @@ class SnippetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Snippet $snippet)
     {
-        //
+        $this->authorize('update',$snippet);
+
+        $request->validate([
+            'title'=>'sometimes|string',
+            'code'=>'sometimes',
+            'language'=>'sometimes|string',
+            'description'=>'nullable|string',
+            'is_favorite'=>'boolean',
+        ]);
+
+        $snippet->update($request->all());
+        return $snippet;
     }
 
     /**
