@@ -70,8 +70,10 @@ class SnippetController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Snippet $snippet)
     {
-        //
+        $this->authorize('delete',$snippet);
+        $snippet->delete();
+        return response()->json(['message'=>'snippet deleted']);
     }
 }
