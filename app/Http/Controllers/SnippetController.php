@@ -13,9 +13,28 @@ class SnippetController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Snippet::where('user_id',Auth::id())->get();
+        $query = Snippet::where('user_id',Auth::id());
+
+        if($request->has('search')){
+            $search = $request->search;
+            $query->where(function($q)use ($search){
+                $q->where('title','like',"%$search%")
+                  ->orWhere('description','like',"%$search%")
+                  ->orWhere('code','like',"%$search%");
+            });
+        }
+
+        if ($request->has('language')) {
+            $query->where('language', $request->language);
+        }
+    
+        if ($request->has('favorite')) {
+            $query->where('is_favorite', true);
+        }
+    
+        return $query->get();
     }
 
     /**
