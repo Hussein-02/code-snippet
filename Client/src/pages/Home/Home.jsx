@@ -6,33 +6,31 @@ import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
-  const [photos, setPhotos] = useState([]);
+  const [snippets, setSnippets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
-  const fetchPhotos = async () => {
+  const fetchSnippets = async (token) => {
     try {
-      const user_id = localStorage.getItem("user_id");
-
-      const response = await axios.get(`${getBaseURL()}/getPhotos.php?user_id=${user_id}`);
-
+      const response = await axios.get(`${getBaseURL()}/snippets`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.data.status) {
-        setPhotos(response.data.photos);
+        setSnippets(response.data.snippets);
+        setLoading(false);
       } else {
-        console.error("Failed to fetch photos");
+        console.error("Failed to fetch snippets");
+        setLoading(false);
       }
     } catch (error) {
-      console.error("Error fetching photos:", error);
+      console.error("Error fetching snippets:", error);
+      setLoading(false);
     }
   };
-
-  const filteredPhotos = photos.filter(
-    (photo) =>
-      photo.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      photo.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      photo.tags.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,8 +38,12 @@ const Home = () => {
       navigate("/");
     }
 
-    fetchPhotos();
+    fetchSnippets(token);
   }, []);
+
+  if (loading) {
+    return <div>Loading snippets...</div>;
+  }
 
   return (
     <div className="body">
@@ -60,19 +62,23 @@ const Home = () => {
       </div>
 
       <div id="photo-cards" className="cards-container">
-        {filteredPhotos.map((photo) => (
-          <div key={photo.id} className="photo-card">
-            <img
-              src="/pen.png"
-              className="edit-card"
-              alt="Edit"
-              onClick={() => navigate("/update", { state: { photo } })}
-            />
-            <img src={photo.image_path} alt="" className="card-image" />
-            <h3>{photo.title}</h3>
-            <p>{photo.description}</p>
-          </div>
-        ))}
+        {snippets.length > 0 ? (
+          snippets.map((snippet) => (
+            <div
+              key={snippet.id}
+              style={{ border: "1px solid #ddd", margin: "10px", padding: "10px" }}
+            >
+              <h3>{snippet.title}</h3>
+              <p>
+                <strong>Language:</strong> {snippet.language}
+              </p>
+              <pre>{snippet.code}</pre>
+              <p>{snippet.description}</p>
+            </div>
+          ))
+        ) : (
+          <p>No snippets found.</p>
+        )}
       </div>
     </div>
   );

@@ -43,7 +43,7 @@ class SnippetController extends Controller
                 $query->where('is_favorite', true);
             }
 
-            return response()->json(['snippets' => $query->get()]);
+            return response()->json(['status' => 'success', 'snippets' => $query->get()]);
         } catch (Exception $e) {
             return response()->json(['message' => $e], 401);
         }
@@ -69,7 +69,7 @@ class SnippetController extends Controller
                 'description' => $request->description,
                 'user_id' => Auth::id(),
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
