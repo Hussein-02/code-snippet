@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-// import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import getBaseURL from "../../utils/baseURL";
 import { useNavigate } from "react-router-dom";
@@ -77,7 +77,7 @@ const Home = () => {
 
   return (
     <div className="body">
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="search-container">
         <input
           className="search-bar"
