@@ -1,0 +1,97 @@
+.login-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60vw;
+  max-width: 600px;
+  height: 55vw;
+  max-height: 489px;
+  background-color: white;
+  border: 2px solid blue;
+  text-align: center;
+}
+.login-section > h1 {
+  font-size: 40px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: start;
+}
+
+.login-form > input {
+  max-width: 240px;
+  max-height: 45px;
+  height: 45px;
+  width: 240px;
+  background-color: blue;
+  color: white;
+  border-radius: 10px;
+  border: 0px;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.login-input > input {
+  width: 450px;
+  max-width: 500px;
+  max-height: 45px;
+  height: 45px;
+  border: 2px solid blue;
+  border-radius: 10px;
+  margin-top: 10px;
+  align-self: center;
+}
+
+.login-input {
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  width: 100%;
+  height: 100px;
+}
+
+.signup-btn {
+  max-width: 240px;
+  max-height: 45px;
+  height: 45px;
+  width: 240px;
+  background-color: transparent;
+  color: blue;
+  border-radius: 10px;
+  border: 2px blue solid;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/*------------------------------- responsive section------------------- */
+
+@media (max-width: 976px) {
+}
+
+@media (max-width: 768px) {
+  .login-section {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    height: 600px;
+  }
+}
+
+@media (max-width: 576px) {
+  .login-input {
+    width: 100%;
+  }
+  .login-input > input {
+    width: 100%;
+  }
+
+  .login-input label {
+    margin-left: 5%;
+  }
+}

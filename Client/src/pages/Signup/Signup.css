@@ -1,0 +1,253 @@
+.login-section > h1 {
+  font-size: 40px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: start;
+}
+
+.login-form > input {
+  max-width: 240px;
+  max-height: 45px;
+  height: 45px;
+  width: 240px;
+  background-color: blue;
+  color: white;
+  border-radius: 10px;
+  border: 0px;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.login-input > input {
+  width: 450px;
+  max-width: 500px;
+  max-height: 45px;
+  height: 45px;
+  border: 2px solid blue;
+  border-radius: 10px;
+  margin-top: 10px;
+  align-self: center;
+}
+
+.login-input {
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  width: 100%;
+  height: 100px;
+}
+
+.signup-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 60vw;
+  height: 56vw;
+  background-color: white;
+  border: 2px solid blue;
+  max-width: 600px;
+  max-height: 500px;
+  text-align: center;
+}
+
+.signup-section h1 {
+  margin-bottom: 2vw;
+}
+
+.signup-btn {
+  max-width: 240px;
+  max-height: 45px;
+  height: 45px;
+  width: 240px;
+  background-color: transparent;
+  color: blue;
+  border-radius: 10px;
+  border: 2px blue solid;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 2vw;
+}
+
+.search-bar {
+  height: 50px;
+  border-radius: 5px;
+  width: 60%;
+  border: 2px blue solid;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  grid-auto-rows: 300px;
+  gap: 40px;
+  margin: 20px;
+}
+
+.photo-card {
+  width: 100%;
+  border: 1px solid blue;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.photo-card h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+.photo-card p {
+  margin: 0;
+  font-size: 16px;
+  color: #666;
+}
+
+.card-image {
+  width: 100%;
+  height: 80%;
+}
+
+.plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: blue;
+  width: 50px;
+  height: 50px;
+  border: 2px blue solid;
+  background-color: transparent;
+  font-size: 50px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.plus-a {
+  text-decoration: none;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  border: 2px blue solid;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 6px 12px;
+  width: 70%;
+  cursor: pointer;
+  align-self: center;
+  text-align: center;
+}
+
+.file-input {
+  display: flex;
+  flex-direction: column;
+  max-width: 450px;
+  width: 100%;
+  margin: 10px;
+}
+
+.photo-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60vw;
+  max-width: 600px;
+  height: 65vw;
+  max-height: 630px;
+  background-color: white;
+  border: 2px solid blue;
+  text-align: center;
+}
+
+.photo-section > h1 {
+  font-size: 40px;
+}
+
+.img-result {
+  align-self: center;
+}
+
+.edit-card {
+  position: absolute;
+  background-color: white;
+  border: 2px blue solid;
+  border-radius: 5px;
+  height: 30px;
+  width: 30px;
+  align-self: flex-end;
+  margin: 10px;
+  cursor: pointer;
+}
+
+/*------------------------------- responsive section------------------- */
+
+@media (max-width: 976px) {
+  .cards-container {
+    grid-template-columns: 300px 300px;
+    grid-auto-rows: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-section {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    height: 600px;
+  }
+  .signup-section {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    height: 600px;
+  }
+  .cards-container {
+    grid-template-columns: 200px 200px;
+    grid-auto-rows: 200px;
+  }
+  .photo-section {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    height: 600px;
+  }
+}
+
+@media (max-width: 576px) {
+  .login-input {
+    width: 100%;
+  }
+  .login-input > input {
+    width: 100%;
+  }
+
+  .login-input label {
+    margin-left: 5%;
+  }
+
+  .cards-container {
+    grid-template-columns: 200px;
+    grid-auto-rows: 200px;
+  }
+}

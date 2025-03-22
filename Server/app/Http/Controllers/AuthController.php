@@ -10,9 +10,10 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $request->validate([
-            'name'=>'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ]);
@@ -25,27 +26,30 @@ class AuthController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(['user' => $user, 'token' => $token], 201);
+        return response()->json(['success' => 'true', 'user' => $user, 'token' => $token], 201);
     }
 
-    public function login(Request $request){
-        $credentials = $request->only('email','password');
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
-        if(!$token = JWTAuth::attempt($credentials)){
-            return response()->json(['error'=>'Unauthorized'],401);
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return response()->json(['token'=>$token]);
+        return response()->json(['success' => 'true', 'token' => $token]);
     }
 
     //to fetch user details
-    public function me(){
+    public function me()
+    {
         return response()->json(Auth::user());
     }
 
-    public function logout(){
+    public function logout()
+    {
         Auth::logout();
-        return response()->json(['message'=>'successfully logged out']);
+        return response()->json(['message' => 'successfully logged out']);
     }
 
     //to refresh token
