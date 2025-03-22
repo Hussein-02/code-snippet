@@ -15,25 +15,25 @@ class SnippetController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Snippet::where('user_id',Auth::id());
+        $query = Snippet::where('user_id', Auth::id());
 
-        if($request->has('search')){
+        if ($request->has('search')) {
             $search = $request->search;
-            $query->where(function($q)use ($search){
-                $q->where('title','like',"%$search%")
-                  ->orWhere('description','like',"%$search%")
-                  ->orWhere('code','like',"%$search%");
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                    ->orWhere('description', 'like', "%$search%")
+                    ->orWhere('code', 'like', "%$search%");
             });
         }
 
         if ($request->has('language')) {
             $query->where('language', $request->language);
         }
-    
+
         if ($request->has('favorite')) {
             $query->where('is_favorite', true);
         }
-    
+
         return $query->get();
     }
 
@@ -42,20 +42,24 @@ class SnippetController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title'=>'required|string',
-            'code'=>'required',
-            'language'=>'required|string',
-            'description'=>'nullable|string',
-        ]);
+        try {
+            $request->validate([
+                'title' => 'required|string',
+                'code' => 'required',
+                'language' => 'required|string',
+                'description' => 'nullable|string',
+            ]);
 
-        return Snippet::create([
-            'title'=>$request->title,
-            'code'=>$request->code,
-            'language'=>$request->language,
-            'description'=>$request->description,
-            'user_id'=> Auth::id(),
-        ]);
+            return Snippet::create([
+                'title' => $request->title,
+                'code' => $request->code,
+                'language' => $request->language,
+                'description' => $request->description,
+                'user_id' => Auth::id(),
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -63,7 +67,7 @@ class SnippetController extends Controller
      */
     public function show(Snippet $snippet)
     {
-        $this->authorize('view',$snippet);
+        $this->authorize('view', $snippet);
         return $snippet;
     }
 
@@ -72,14 +76,14 @@ class SnippetController extends Controller
      */
     public function update(Request $request, Snippet $snippet)
     {
-        $this->authorize('update',$snippet);
+        $this->authorize('update', $snippet);
 
         $request->validate([
-            'title'=>'sometimes|string',
-            'code'=>'sometimes',
-            'language'=>'sometimes|string',
-            'description'=>'nullable|string',
-            'is_favorite'=>'boolean',
+            'title' => 'sometimes|string',
+            'code' => 'sometimes',
+            'language' => 'sometimes|string',
+            'description' => 'nullable|string',
+            'is_favorite' => 'boolean',
         ]);
 
         $snippet->update($request->all());
@@ -91,15 +95,19 @@ class SnippetController extends Controller
      */
     public function destroy(Snippet $snippet)
     {
-        $this->authorize('delete',$snippet);
+        $this->authorize('delete', $snippet);
         $snippet->delete();
-        return response()->json(['message'=>'snippet deleted']);
+        return response()->json(['message' => 'snippet deleted']);
     }
 
-    public function toggleFavorite(Snippet $snippet){
-        $this->authorize('update',$snippet);
+    public function toggleFavorite(Snippet $snippet)
+    {
+
+        if (Auth::id() !== $snippet->user_id) {
+            return response()->json(['error' => 'Unauthorized action.'], 403);
+        }
         $snippet->is_favorite = !$snippet->is_favorite;
         $snippet->save();
-        return response()->json(['message'=>'favorite status updated', 'is_favorite'=>$snippet->is_favorite]);
+        return response()->json(['message' => 'favorite status updated', 'is_favorite' => $snippet->is_favorite]);
     }
 }
