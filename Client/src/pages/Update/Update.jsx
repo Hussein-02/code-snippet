@@ -40,10 +40,9 @@ const Update = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(`${getBaseURL()}/snippets`, {
-        data: { id: snippet.id },
+      const response = await axios.delete(`${getBaseURL()}/snippets/${snippet.id}`, {
         headers: {
-          "Content-Type": "application/json",
+          Authorization: `Bearer ${token.current}`,
         },
       });
       if (response.data.success) {
