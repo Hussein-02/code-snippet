@@ -148,7 +148,7 @@ const Update = () => {
 
           <input type="submit" value="Submit" />
           <button className="signup-btn" onClick={handleDelete}>
-            Delete Photo
+            Delete Snippet
           </button>
         </form>
       </div>

@@ -60,13 +60,14 @@ const Home = () => {
 
   const handleFavoriteFilter = async (shared_token) => {
     try {
-      const response = await axios.get(`${getBaseURL()}/snippets?favorite`, {
+      const url = !pressed ? `${getBaseURL()}/snippets?favorite` : `${getBaseURL()}/snippets`;
+
+      const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${shared_token.current}`,
         },
       });
       if (response.data.status) {
-        setPressed(!pressed);
         setSnippets(response.data.snippets);
         setLoading(false);
       } else {
@@ -77,6 +78,11 @@ const Home = () => {
       console.error("Error fetching snippets:", error);
       setLoading(false);
     }
+  };
+
+  const handleFavoriteButtonClick = () => {
+    setPressed(!pressed);
+    handleFavoriteFilter(shared_token);
   };
 
   const handleToggleFavorite = async (shared_token, snippet) => {
@@ -141,7 +147,7 @@ const Home = () => {
           <button className="plus">+</button>
         </a>
 
-        <button className="favorite-toggle" onClick={handleFavoriteFilter}>
+        <button className="favorite-toggle" onClick={handleFavoriteButtonClick}>
           <img src={pressed ? "/favorite.png" : "/like.png"} alt="" />
         </button>
       </div>
@@ -152,14 +158,14 @@ const Home = () => {
             <div key={snippet.id} className="snippet-card">
               {snippet.is_favorite == 1 ? (
                 <img
-                  src="/like.png"
+                  src="/favorite.png"
                   className="favorite-card"
                   alt="favorite"
                   onClick={() => handleToggleFavorite(shared_token, snippet)}
                 />
               ) : (
                 <img
-                  src="/favorite.png"
+                  src="/like.png"
                   className="favorite-card"
                   alt="favorite"
                   onClick={() => handleToggleFavorite(shared_token, snippet)}
