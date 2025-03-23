@@ -13,24 +13,40 @@ const Update = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const snippet = location.state?.snippet || {};
-  console.log(snippet);
 
   const [form, setForm] = useState({
-    title: "",
-    code: "",
-    language: "",
-    description: "",
+    title: snippet.title,
+    code: snippet.code,
+    language: snippet.language,
+    description: snippet.description,
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${getBaseURL()}/snippets`, form, {
+      const response = await axios.put(`${getBaseURL()}/snippets/${snippet.id}`, form, {
         headers: {
           Authorization: `Bearer ${token.current}`,
         },
       });
       if (response.data.success) {
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error("There was an error!", error);
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`${getBaseURL()}/deletePhoto.php`, {
+        data: { photo_id: form.photo_id },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.data.status) {
         navigate("/home");
       }
     } catch (error) {
@@ -57,6 +73,7 @@ const Update = () => {
               type="text"
               id="title"
               name="title"
+              value={form.title}
               onChange={(e) => {
                 setForm({
                   ...form,
@@ -72,6 +89,7 @@ const Update = () => {
               type="text"
               id="language"
               name="language"
+              value={form.language}
               onChange={(e) => {
                 setForm({
                   ...form,
@@ -103,6 +121,7 @@ const Update = () => {
               theme="dark"
               id="code"
               name="code"
+              value={form.code}
               onChange={(value) => {
                 setForm({
                   ...form,
@@ -118,6 +137,7 @@ const Update = () => {
               type="text"
               id="description"
               name="description"
+              value={form.description}
               onChange={(e) => {
                 setForm({
                   ...form,
@@ -128,6 +148,9 @@ const Update = () => {
           </div>
 
           <input type="submit" value="Submit" />
+          <button className="signup-btn" onClick={handleDelete}>
+            Delete Photo
+          </button>
         </form>
       </div>
     </div>
