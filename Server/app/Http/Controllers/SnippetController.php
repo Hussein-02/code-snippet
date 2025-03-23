@@ -99,18 +99,31 @@ class SnippetController extends Controller
      */
     public function update(Request $request, Snippet $snippet)
     {
-        $this->authorize('update', $snippet);
+        // $this->authorize('update', $snippet);
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
 
-        $request->validate([
-            'title' => 'sometimes|string',
-            'code' => 'sometimes',
-            'language' => 'sometimes|string',
-            'description' => 'nullable|string',
-            'is_favorite' => 'boolean',
-        ]);
+            if (!$user) {
+                return response()->json(['message' => 'User not authenticated'], 401);
+            }
 
-        $snippet->update($request->all());
-        return $snippet;
+            $request->validate([
+                'title' => 'sometimes|string',
+                'code' => 'sometimes',
+                'language' => 'sometimes|string',
+                'description' => 'nullable|string',
+                'is_favorite' => 'boolean',
+            ]);
+
+            $snippet->update($request->all());
+
+            return response()->json([
+                'success' => 'true',
+                'snippet' => $snippet,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -118,17 +131,25 @@ class SnippetController extends Controller
      */
     public function destroy(Snippet $snippet)
     {
-        $this->authorize('delete', $snippet);
+        // $this->authorize('delete', $snippet);
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
+
         $snippet->delete();
-        return response()->json(['message' => 'snippet deleted']);
+        return response()->json(['success' => true]);
     }
 
     public function toggleFavorite(Snippet $snippet)
     {
+        $user = JWTAuth::parseToken()->authenticate();
 
-        if (Auth::id() !== $snippet->user_id) {
-            return response()->json(['error' => 'Unauthorized action.'], 403);
+        if (!$user) {
+            return response()->json(['message' => 'User not authenticated'], 401);
         }
+
         $snippet->is_favorite = !$snippet->is_favorite;
         $snippet->save();
         return response()->json(['message' => 'favorite status updated', 'is_favorite' => $snippet->is_favorite]);

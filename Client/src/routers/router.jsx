@@ -5,6 +5,7 @@ import Login from "../pages/Login/Login";
 import Signup from "../pages/Signup/Signup";
 import Home from "../pages/Home/Home";
 import Snippet from "../pages/Snippet/Snippet";
+import Update from "../pages/Update/Update";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/add",
         element: <Snippet />,
+      },
+      {
+        path: "/update",
+        element: <Update />,
       },
     ],
   },
