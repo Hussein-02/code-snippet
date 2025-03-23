@@ -40,13 +40,13 @@ const Update = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.delete(`${getBaseURL()}/deletePhoto.php`, {
-        data: { photo_id: form.photo_id },
+      const response = await axios.delete(`${getBaseURL()}/snippets`, {
+        data: { id: snippet.id },
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (response.data.status) {
+      if (response.data.success) {
         navigate("/home");
       }
     } catch (error) {
