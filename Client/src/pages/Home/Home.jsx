@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import getBaseURL from "../../utils/baseURL";
@@ -9,6 +9,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import "./Home.css";
 
 const Home = () => {
+  const shared_token = useRef("");
   const [snippets, setSnippets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -55,14 +56,22 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/");
+  const handleToggleFavorite = async (shared_token, snippet) => {
+    try {
+      const response = await axios.patch(
+        `${getBaseURL()}/snippets/${snippet.id}/favorite`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${shared_token.current}`,
+          },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.error("There was an error toggling the favorite status!", error);
     }
-
-    fetchSnippets(token);
-  }, []);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -72,6 +81,16 @@ const Home = () => {
 
     filterSnippets(token);
   }, [searchQuery]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    shared_token.current = token;
+    if (!token) {
+      navigate("/");
+    }
+
+    fetchSnippets(token);
+  }, []);
 
   const copyToClipboard = (code) => {
     navigator.clipboard.writeText(code);
@@ -101,7 +120,12 @@ const Home = () => {
         {snippets.length > 0 ? (
           snippets.map((snippet) => (
             <div key={snippet.id} className="snippet-card">
-              <img src="/like.png" className="favorite-card" alt="favorite" onClick={() => {}} />
+              <img
+                src="/like.png"
+                className="favorite-card"
+                alt="favorite"
+                onClick={() => handleToggleFavorite(shared_token, snippet)}
+              />
               <img
                 src="/edit.png"
                 className="edit-card"
