@@ -13,6 +13,9 @@ const Home = () => {
   const [snippets, setSnippets] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  //using this to rerender the page when favorite icon is pressed
+  const [favorite, setFavorite] = useState(false);
+  const [pressed, setPressed] = useState(false);
 
   const navigate = useNavigate();
 
@@ -25,13 +28,12 @@ const Home = () => {
       });
       if (response.data.status) {
         setSnippets(response.data.snippets);
-        setLoading(false);
       } else {
         console.error("Failed to fetch snippets");
-        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching snippets:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -56,9 +58,30 @@ const Home = () => {
     }
   };
 
+  const handleFavoriteFilter = async (shared_token) => {
+    try {
+      const response = await axios.get(`${getBaseURL()}/snippets?favorite`, {
+        headers: {
+          Authorization: `Bearer ${shared_token.current}`,
+        },
+      });
+      if (response.data.status) {
+        setPressed(!pressed);
+        setSnippets(response.data.snippets);
+        setLoading(false);
+      } else {
+        console.error("Failed to fetch snippets");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error fetching snippets:", error);
+      setLoading(false);
+    }
+  };
+
   const handleToggleFavorite = async (shared_token, snippet) => {
     try {
-      const response = await axios.patch(
+      await axios.patch(
         `${getBaseURL()}/snippets/${snippet.id}/favorite`,
         {},
         {
@@ -67,12 +90,13 @@ const Home = () => {
           },
         }
       );
-      console.log(response);
+      setFavorite(!favorite);
     } catch (error) {
       console.error("There was an error toggling the favorite status!", error);
     }
   };
 
+  //for when the user enters in the search bar
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -82,6 +106,7 @@ const Home = () => {
     filterSnippets(token);
   }, [searchQuery]);
 
+  //to fetch snippets when page renders and to change the favorite icon
   useEffect(() => {
     const token = localStorage.getItem("token");
     shared_token.current = token;
@@ -90,7 +115,7 @@ const Home = () => {
     }
 
     fetchSnippets(token);
-  }, []);
+  }, [favorite]);
 
   const copyToClipboard = (code) => {
     navigator.clipboard.writeText(code);
@@ -111,21 +136,36 @@ const Home = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+
         <a href="/add" className="plus-a">
           <button className="plus">+</button>
         </a>
+
+        <button className="favorite-toggle" onClick={handleFavoriteFilter}>
+          <img src={pressed ? "/favorite.png" : "/like.png"} alt="" />
+        </button>
       </div>
       {/* cards */}
       <div id="snippet-cards" className="cards-container">
         {snippets.length > 0 ? (
           snippets.map((snippet) => (
             <div key={snippet.id} className="snippet-card">
-              <img
-                src="/like.png"
-                className="favorite-card"
-                alt="favorite"
-                onClick={() => handleToggleFavorite(shared_token, snippet)}
-              />
+              {snippet.is_favorite == 1 ? (
+                <img
+                  src="/like.png"
+                  className="favorite-card"
+                  alt="favorite"
+                  onClick={() => handleToggleFavorite(shared_token, snippet)}
+                />
+              ) : (
+                <img
+                  src="/favorite.png"
+                  className="favorite-card"
+                  alt="favorite"
+                  onClick={() => handleToggleFavorite(shared_token, snippet)}
+                />
+              )}
+
               <img
                 src="/edit.png"
                 className="edit-card"
