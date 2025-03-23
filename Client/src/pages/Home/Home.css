@@ -41,6 +41,7 @@
 .snippet-card p {
   margin: 20px;
 }
+/*  */
 
 .cards-container {
   display: grid;
@@ -48,6 +49,13 @@
   grid-auto-rows: 300px;
   gap: 40px;
   margin: 20px;
+}
+
+@media (max-width: 976px) {
+  .cards-container {
+    grid-template-columns: 300px 300px;
+    grid-auto-rows: 300px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -70,12 +78,5 @@
     grid-template-columns: 300px;
     grid-auto-rows: 300px;
     gap: 30px;
-  }
-}
-
-@media (max-width: 976px) {
-  .cards-container {
-    grid-template-columns: 300px 300px;
-    grid-auto-rows: 300px;
   }
 }
