@@ -3,7 +3,7 @@
   background: #282c34;
   border-radius: 5px;
   overflow: hidden;
-  height: 60%;
+  height: 67%;
   /* padding: 5px; */
 }
 
@@ -25,6 +25,8 @@
 }
 
 .snippet-card {
+  display: flex;
+  flex-direction: column;
   background: #1e1e1e;
   color: white;
   /* padding: 15px; */
@@ -35,11 +37,15 @@
 }
 
 .snippet-card h3 {
-  margin: 20px;
+  /* margin: 10px 20px; */
+  margin-left: 20px;
+  margin-bottom: 10px;
 }
 
 .snippet-card p {
-  margin: 20px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
 /*  */
 
@@ -49,6 +55,19 @@
   grid-auto-rows: 300px;
   gap: 40px;
   margin: 20px;
+}
+.edit-card {
+  position: absolute;
+  /* background-color: white; */
+  fill: white;
+  color: white;
+  /* border: 2px blue solid; */
+  border-radius: 5px;
+  height: 30px;
+  width: 30px;
+  align-self: flex-end;
+  margin: 15px;
+  cursor: pointer;
 }
 
 @media (max-width: 976px) {

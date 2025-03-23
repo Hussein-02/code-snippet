@@ -1,23 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import getBaseURL from "../../utils/baseURL";
 import axios from "axios";
 import { javascript } from "@codemirror/lang-javascript";
 import CodeMirror from "@uiw/react-codemirror";
-import "./Snippet.css";
+import "./Update.css";
 
 const Update = () => {
   //useRef is used to share a variable between functions
   const token = useRef("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const snippet = location.state?.snippet || {};
+  console.log(snippet);
+
   const [form, setForm] = useState({
     title: "",
     code: "",
     language: "",
     description: "",
   });
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

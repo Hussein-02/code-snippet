@@ -101,6 +101,12 @@ const Home = () => {
         {snippets.length > 0 ? (
           snippets.map((snippet) => (
             <div key={snippet.id} className="snippet-card">
+              <img
+                src="/edit.png"
+                className="edit-card"
+                alt="Edit"
+                onClick={() => navigate("/update", { state: { snippet } })}
+              />
               <h3>{snippet.title}</h3>
               <p>
                 <strong>Language:</strong> {snippet.language}
