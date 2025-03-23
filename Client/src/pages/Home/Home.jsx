@@ -4,6 +4,8 @@ import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import getBaseURL from "../../utils/baseURL";
 import { useNavigate } from "react-router-dom";
+import { javascript } from "@codemirror/lang-javascript";
+import CodeMirror from "@uiw/react-codemirror";
 import "./Home.css";
 
 const Home = () => {
@@ -71,6 +73,10 @@ const Home = () => {
     filterSnippets(token);
   }, [searchQuery]);
 
+  const copyToClipboard = (code) => {
+    navigator.clipboard.writeText(code);
+  };
+
   if (loading) {
     return <div>Loading snippets...</div>;
   }
@@ -86,15 +92,46 @@ const Home = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <a href="/photo" className="plus-a">
+        <a href="/snippet" className="plus-a">
           <button className="plus">+</button>
         </a>
       </div>
-
-      <div id="photo-cards" className="cards-container">
+      {/* cards */}
+      <div id="snippet-cards" className="cards-container">
         {snippets.length > 0 ? (
           snippets.map((snippet) => (
-            <div key={snippet.id}>
+            <div key={snippet.id} className="snippet-card">
+              <h3>{snippet.title}</h3>
+              <p>
+                <strong>Language:</strong> {snippet.language}
+              </p>
+
+              <div className="code-container">
+                <CodeMirror
+                  value={snippet.code}
+                  height="150px"
+                  extensions={[javascript()]}
+                  theme="dark"
+                  options={{ readOnly: true }}
+                  editable={false}
+                />
+                <button className="copy-btn" onClick={() => copyToClipboard(snippet.code)}>
+                  Copy
+                </button>
+              </div>
+
+              {/* <p>{snippet.description}</p> */}
+            </div>
+          ))
+        ) : (
+          <p>No snippets found.</p>
+        )}
+      </div>
+
+      {/* <div id="snippet-cards" className="cards-container">
+        {snippets.length > 0 ? (
+          snippets.map((snippet) => (
+            <div key={snippet.id} className="snippet-card">
               <h3>{snippet.title}</h3>
               <p>
                 <strong>Language:</strong> {snippet.language}
@@ -106,7 +143,7 @@ const Home = () => {
         ) : (
           <p>No snippets found.</p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

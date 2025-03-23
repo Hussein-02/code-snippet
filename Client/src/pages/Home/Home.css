@@ -1,0 +1,82 @@
+.code-container {
+  position: relative;
+  background: #282c34;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 60%;
+  /* padding: 5px; */
+}
+
+.copy-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #ffcc00;
+  color: black;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+.copy-btn:hover {
+  background: #e6b800;
+}
+
+.snippet-card {
+  background: #1e1e1e;
+  color: white;
+  /* padding: 15px; */
+  border-radius: 8px;
+  /* margin-bottom: 20px; */
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.2);
+}
+
+.snippet-card h3 {
+  margin: 20px;
+}
+
+.snippet-card p {
+  margin: 20px;
+}
+/*  */
+
+.cards-container {
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  grid-auto-rows: 300px;
+  gap: 40px;
+  margin: 20px;
+}
+
+@media (max-width: 976px) {
+  .cards-container {
+    grid-template-columns: 300px 300px;
+    grid-auto-rows: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .cards-container {
+    grid-template-columns: 200px;
+    grid-auto-rows: 200px;
+    gap: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .code-container {
+    width: 100%;
+  }
+  .snippet-card {
+    width: 90%;
+    height: 100%;
+  }
+  .cards-container {
+    grid-template-columns: 300px;
+    grid-auto-rows: 300px;
+    gap: 30px;
+  }
+}
