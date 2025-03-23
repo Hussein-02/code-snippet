@@ -1,27 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import getBaseURL from "../../utils/baseURL";
 import axios from "axios";
 
 const Snippet = () => {
-  const [token, setToken] = useState("");
+  //useRef is used to share a variable between functions
+  const token = useRef("");
   const [form, setForm] = useState({
-    user_id: "",
     title: "",
+    code: "",
+    language: "",
     description: "",
-    tags: "",
-    image_path: "",
   });
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e, token) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${getBaseURL()}/addPhoto.php`, form, {
+      const response = await axios.post(`${getBaseURL()}/snippets`, form, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.current}`,
         },
       });
       if (response.data.status) {
@@ -33,8 +33,8 @@ const Snippet = () => {
   };
 
   useEffect(() => {
-    setToken(localStorage.getItem("token"));
-    if (!token) {
+    token.current = localStorage.getItem("token");
+    if (!token.current) {
       navigate("/");
     }
   }, []);
@@ -61,6 +61,36 @@ const Snippet = () => {
           </div>
 
           <div className="login-input">
+            <label htmlFor="language">Language</label>
+            <input
+              type="text"
+              id="language"
+              name="language"
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  language: e.target.value,
+                });
+              }}
+            />
+          </div>
+
+          <div className="login-input">
+            <label htmlFor="code">Code</label>
+            <input
+              type="text"
+              id="code"
+              name="code"
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  code: e.target.value,
+                });
+              }}
+            />
+          </div>
+
+          <div className="login-input">
             <label htmlFor="description">Description</label>
             <input
               type="text"
@@ -73,26 +103,6 @@ const Snippet = () => {
                 });
               }}
             />
-          </div>
-
-          <div className="login-input">
-            <label htmlFor="tags">Tags</label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              onChange={(e) => {
-                setForm({
-                  ...form,
-                  tags: e.target.value,
-                });
-              }}
-            />
-          </div>
-          <div className="file-input">
-            <label htmlFor="image_path" className="custom-file-upload">
-              Upload Image
-            </label>
           </div>
 
           <input type="submit" value="Submit" />

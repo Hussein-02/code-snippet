@@ -92,7 +92,7 @@ const Home = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <a href="/snippet" className="plus-a">
+        <a href="/add" className="plus-a">
           <button className="plus">+</button>
         </a>
       </div>
