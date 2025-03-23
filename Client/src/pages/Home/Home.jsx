@@ -101,6 +101,7 @@ const Home = () => {
         {snippets.length > 0 ? (
           snippets.map((snippet) => (
             <div key={snippet.id} className="snippet-card">
+              <img src="/like.png" className="favorite-card" alt="favorite" onClick={() => {}} />
               <img
                 src="/edit.png"
                 className="edit-card"
