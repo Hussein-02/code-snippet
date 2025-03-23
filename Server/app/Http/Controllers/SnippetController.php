@@ -55,6 +55,12 @@ class SnippetController extends Controller
     public function store(Request $request)
     {
         try {
+            $user = JWTAuth::parseToken()->authenticate();
+
+            if (!$user) {
+                return response()->json(['message' => 'User not authenticated'], 401);
+            }
+
             $request->validate([
                 'title' => 'required|string',
                 'code' => 'required',
@@ -62,13 +68,18 @@ class SnippetController extends Controller
                 'description' => 'nullable|string',
             ]);
 
-            return Snippet::create([
+            $snippet = Snippet::create([
                 'title' => $request->title,
                 'code' => $request->code,
                 'language' => $request->language,
                 'description' => $request->description,
-                'user_id' => Auth::id(),
+                'user_id' => $user->id,
             ]);
+
+            return response()->json([
+                'success' => true,
+                'snippet' => $snippet,
+            ], 201);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
