@@ -55,6 +55,8 @@ class SnippetController extends Controller
     public function store(Request $request)
     {
         try {
+            // $user = JWTAuth::parseToken()->authenticate();
+
             $request->validate([
                 'title' => 'required|string',
                 'code' => 'required',
