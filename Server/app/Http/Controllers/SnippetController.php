@@ -99,18 +99,31 @@ class SnippetController extends Controller
      */
     public function update(Request $request, Snippet $snippet)
     {
-        $this->authorize('update', $snippet);
+        // $this->authorize('update', $snippet);
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
 
-        $request->validate([
-            'title' => 'sometimes|string',
-            'code' => 'sometimes',
-            'language' => 'sometimes|string',
-            'description' => 'nullable|string',
-            'is_favorite' => 'boolean',
-        ]);
+            if (!$user) {
+                return response()->json(['message' => 'User not authenticated'], 401);
+            }
 
-        $snippet->update($request->all());
-        return $snippet;
+            $request->validate([
+                'title' => 'sometimes|string',
+                'code' => 'sometimes',
+                'language' => 'sometimes|string',
+                'description' => 'nullable|string',
+                'is_favorite' => 'boolean',
+            ]);
+
+            $snippet->update($request->all());
+
+            return response()->json([
+                'success' => 'true',
+                'snippet' => $snippet,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
