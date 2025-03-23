@@ -77,7 +77,7 @@ class SnippetController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Snippet created successfully',
+                'success' => true,
                 'snippet' => $snippet,
             ], 201);
         } catch (Exception $e) {

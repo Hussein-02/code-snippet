@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import getBaseURL from "../../utils/baseURL";
 import axios from "axios";
+import "./Snippet.css";
 
 const Snippet = () => {
   //useRef is used to share a variable between functions
@@ -24,7 +25,7 @@ const Snippet = () => {
           Authorization: `Bearer ${token.current}`,
         },
       });
-      if (response.data.status) {
+      if (response.data.success) {
         navigate("/home");
       }
     } catch (error) {
@@ -42,7 +43,7 @@ const Snippet = () => {
   return (
     <div className="body">
       <h1 className="logo">CODE SNIPPET</h1>
-      <div className="photo-section">
+      <div className="snippet-section">
         <h1>Add Snippet</h1>
         <form className="login-form" id="signupForm" onSubmit={handleSubmit}>
           <div className="login-input">
