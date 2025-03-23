@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import getBaseURL from "../../utils/baseURL";
 import axios from "axios";
 
-const Photo = () => {
+const Snippet = () => {
   const [token, setToken] = useState("");
   const [form, setForm] = useState({
     user_id: "",
@@ -102,4 +102,4 @@ const Photo = () => {
   );
 };
 
-export default Photo;
+export default Snippet;
