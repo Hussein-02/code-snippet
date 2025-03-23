@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import getBaseURL from "../../utils/baseURL";
 import axios from "axios";
+import { javascript } from "@codemirror/lang-javascript";
+import CodeMirror from "@uiw/react-codemirror";
 import "./Snippet.css";
 
 const Snippet = () => {
@@ -76,16 +78,32 @@ const Snippet = () => {
             />
           </div>
 
-          <div className="login-input">
+          {/* <div className="login-input">
             <label htmlFor="code">Code</label>
             <input
-              type="text"
+            type="text"
+            id="code"
+            name="code"
+            onChange={(e) => {
+                setForm({
+                    ...form,
+                    code: e.target.value,
+                    });
+                    }}
+                    />
+                    </div> */}
+          <div className="snippet-input">
+            <label htmlFor="code">Code</label>
+            <CodeMirror
+              height="150px"
+              extensions={[javascript()]}
+              theme="dark"
               id="code"
               name="code"
-              onChange={(e) => {
+              onChange={(value) => {
                 setForm({
                   ...form,
-                  code: e.target.value,
+                  code: value,
                 });
               }}
             />
